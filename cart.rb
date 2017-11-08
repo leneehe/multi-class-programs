@@ -17,7 +17,7 @@ class ShoppingCart
         counter += 1
       end
     end
-    if counter == @cart.length
+    if counter >= @cart.length
       puts "You don't have #{product} in cart!"
     end
   end
@@ -42,6 +42,18 @@ class ShoppingCart
     @cart
   end
 
+  def most_expensive
+    item_price = 0
+    item = nil
+    @cart.each do |product|
+      if product.base_price > item_price
+         item_price = product.base_price
+         item = product
+      end
+    end
+    return item
+  end
+
 end
 
 my_cart = ShoppingCart.new
@@ -55,10 +67,12 @@ my_cart.add_product("Bedsheet", 60.99, 0.13)
 puts my_cart.whats_in_cart.inspect
 puts "Total before tax: $#{my_cart.total_before_tax}"
 puts "Total after tax: $#{my_cart.total_after_tax}"
+puts "Most expensive item is #{my_cart.most_expensive.name} at $#{my_cart.most_expensive.base_price}"
 
-my_cart.remove_product("Milk")
+my_cart.remove_product("Bedsheet")
 my_cart.remove_product("Card")
 puts my_cart.whats_in_cart.inspect
 
 puts "Total before tax: $#{my_cart.total_before_tax}"
 puts "Total after tax: $#{my_cart.total_after_tax}"
+puts "Most expensive item is #{my_cart.most_expensive.name} at $#{my_cart.most_expensive.base_price}"
