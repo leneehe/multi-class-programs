@@ -4,12 +4,22 @@ class ShoppingCart
     @cart = []
   end
 
-  def add_product(product)
-    @cart << product
+  def add_product(name, price, tax)
+    @cart << Product.new(name, price, tax)
   end
 
   def remove_product(product)
-    @cart.delete(product)
+    counter = 0
+    @cart.each do |i|
+      if i.name == product
+        @cart.delete(i)
+      elsif product != i.name
+        counter += 1
+      end
+    end
+    if counter == @cart.length
+      puts "You don't have #{product} in cart!"
+    end
   end
 
   def total_after_tax
@@ -29,29 +39,26 @@ class ShoppingCart
   end
 
   def whats_in_cart
-    @cart.inspect
+    @cart
   end
 
 end
 
-item1 = Product.new("Tooth brush", 7.99, 0.13)
-item2 = Product.new("Bananas", 4.99, 0)
-item3 = Product.new("Milk", 5.65, 0)
-item4 = Product.new("Bedsheet", 60.99, 0.13)
 my_cart = ShoppingCart.new
-puts my_cart.whats_in_cart
+puts my_cart.whats_in_cart.inspect
 
-my_cart.add_product(item1)
-my_cart.add_product(item2)
-my_cart.add_product(item3)
-my_cart.add_product(item4)
+my_cart.add_product("Tooth brush", 7.99, 0.13)
+my_cart.add_product("Bananas", 4.99, 0)
+my_cart.add_product("Milk", 5.65, 0)
+my_cart.add_product("Bedsheet", 60.99, 0.13)
 
-puts my_cart.whats_in_cart
+puts my_cart.whats_in_cart.inspect
 puts "Total before tax: $#{my_cart.total_before_tax}"
 puts "Total after tax: $#{my_cart.total_after_tax}"
 
-my_cart.remove_product(item3)
-puts my_cart.whats_in_cart
+my_cart.remove_product("Milk")
+my_cart.remove_product("Card")
+puts my_cart.whats_in_cart.inspect
 
 puts "Total before tax: $#{my_cart.total_before_tax}"
 puts "Total after tax: $#{my_cart.total_after_tax}"
